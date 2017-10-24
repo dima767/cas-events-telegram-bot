@@ -23,8 +23,6 @@ public class CasEventsConsumingTelegramBot extends TelegramLongPollingBot {
 
     private String botUsername;
 
-    private AtomicLong chatId = new AtomicLong(-1L);
-
     private Queue<Long> chatIds = new ConcurrentLinkedQueue<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasEventsConsumingTelegramBot.class);
