@@ -1,0 +1,73 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply from: 'http://dl.bintray.com/scalding/generic/waroverlay.gradle'
+apply from: 'https://raw.githubusercontent.com/apereo/cas/master/gradle/overrides.gradle'
+
+bootRepackage {
+    enabled = false
+}
+
+springBoot  {
+    mainClass = "org.springframework.boot.loader.WarLauncher"
+}
+
+bootRun {
+    addResources = true
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compile "org.apereo.cas:cas-server-webapp:${project.'cas.version'}@war"
+    compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
+
+    //Telegram Bot API
+    //compile 'com.github.xabgesagtx:telegram-spring-boot-starter:0.12'
+    compile 'org.telegram:telegrambots:3.4'
+
+    //For development
+    compile "org.apereo.cas:cas-server-core-api-events:${project.'cas.version'}"
+    compile "org.apereo.cas:cas-server-core:${project.'cas.version'}"
+    compile "org.springframework:spring-context"
+}
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    exclude group: 'org.springframework.boot', module: 'logback-classic'
+}
+
+war {
+    baseName 'cas'
+    includeWarJars = true
+    entryCompression = ZipEntryCompression.STORED
+    manifest {
+        from manifestFile()
+    }
+}
+
+task explodeWar(type: Copy) {
+    group = "build"
+    description = "Explode the cas.war"
+    from zipTree(project.war.outputs.files.singleFile)
+    into "${buildDir}/cas"
+}
+
+File manifestFile() {
+    def warfile = configurations.runtime.asFileTree.matching {
+        include '**/*.war'
+    }
+    def manifest = zipTree(warfile.singleFile).matching {
+        include '**/*.MF'
+    }
+    def dst = new File("${project.rootDir}/etc/cas/MANIFEST.MF")
+    dst.delete()
+    dst << manifest.singleFile.text
+    return dst
+}
