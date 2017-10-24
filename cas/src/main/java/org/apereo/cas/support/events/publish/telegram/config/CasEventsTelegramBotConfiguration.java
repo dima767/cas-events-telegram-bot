@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.generics.BotSession;
 
@@ -22,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Spring configuration class for cas events spring cloud stream subsystem.
+ * Spring configuration class for cas telegram bot facility
  *
  * @author Dmitriy Kopylenko
  */
