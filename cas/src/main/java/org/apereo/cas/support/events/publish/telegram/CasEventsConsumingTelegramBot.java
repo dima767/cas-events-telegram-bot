@@ -7,7 +7,9 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.stream.Stream;
@@ -23,7 +25,7 @@ public class CasEventsConsumingTelegramBot extends TelegramLongPollingBot {
 
     private String botUsername;
 
-    private Queue<Long> chatIds = new ConcurrentLinkedQueue<>();
+    private Set<Long> chatIds = new ConcurrentSkipListSet<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasEventsConsumingTelegramBot.class);
 
@@ -40,7 +42,7 @@ public class CasEventsConsumingTelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         LOGGER.info("Received a chat bot update from Telegram servers: {}", update);
-        this.chatIds.offer(update.getMessage().getChatId());
+        this.chatIds.add(update.getMessage().getChatId());
     }
 
     @Override

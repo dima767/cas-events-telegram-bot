@@ -33,7 +33,7 @@ public class CasEventsTelegramBotPublisher {
         casTelegramBot.getChatIdsCurrentlyConnectedToMe()
                 .forEach(chatId -> {
                     try {
-                        casTelegramBot.sendMessage(new SendMessage(chatId, formattedUserLoggedInMessage(event)));
+                        casTelegramBot.execute(new SendMessage(chatId, formattedUserLoggedInMessage(event)));
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                         casTelegramBot.removeMeFromChat(chatId);

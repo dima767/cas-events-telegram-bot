@@ -3,18 +3,6 @@ apply plugin: 'io.spring.dependency-management'
 apply from: 'http://dl.bintray.com/scalding/generic/waroverlay.gradle'
 apply from: 'https://raw.githubusercontent.com/apereo/cas/master/gradle/overrides.gradle'
 
-bootRepackage {
-    enabled = false
-}
-
-springBoot  {
-    mainClass = "org.springframework.boot.loader.WarLauncher"
-}
-
-bootRun {
-    addResources = true
-}
-
 repositories {
     jcenter()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -24,11 +12,10 @@ repositories {
 }
 
 dependencies {
-    compile "org.apereo.cas:cas-server-webapp:${project.'cas.version'}@war"
+    compile "org.apereo.cas:cas-server-webapp-tomcat:${project.'cas.version'}@war"
     compile "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
 
     //Telegram Bot API
-    //compile 'com.github.xabgesagtx:telegram-spring-boot-starter:0.12'
     compile 'org.telegram:telegrambots:3.4'
 
     //For development
