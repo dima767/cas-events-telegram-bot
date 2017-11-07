@@ -1,1 +1,1 @@
-./buildWar; java -jar cas/build/libs/cas.war
+./buildWar; java -Xms4g -Xmx8g -jar cas/build/libs/cas.war
